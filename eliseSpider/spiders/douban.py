@@ -10,7 +10,7 @@ class DoubanSpider(scrapy.Spider):
     def parse(self, response):
         print("===============================================================")
         item = ElisespiderItem()
-        book_list = response.xpath('/dl')
+        book_list = response.xpath('//ul[@class="subject-list"]')
         for book in book_list:
-            item['book_icon_img'] = book.xpath('/dt/a/img//@src').text()
+            item['book_icon_img'] = book.xpath('/li/div/a/img//@src').text()
             item['detail_link'] = book.xpath('/dt/a//@href').text()
