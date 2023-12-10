@@ -7,6 +7,22 @@ import scrapy
 
 
 class ElisespiderItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    # icon 图片链接
+    book_icon_img = scrapy.Field()
+    # 详情链接
+    detail_link = scrapy.Field()
+    # book name
+    name = scrapy.Field()
+    # 作者
+    auther = scrapy.Field()
+    # 出版社
+    publishingHouse = scrapy.Field()
+    # 出版时间
+    publishedDate = scrapy.Field()
+    # 价格
+    price = scrapy.Field()
+    # 评价分数
+    ratingNums = scrapy.Field()
+    # 评价人数
+    ratingPersonNub = scrapy.Field()
+
