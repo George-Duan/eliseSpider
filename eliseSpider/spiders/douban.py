@@ -5,7 +5,7 @@ from eliseSpider.items import ElisespiderItem
 class DoubanSpider(scrapy.Spider):
     name = "douban"
     allowed_domains = ["book.douban.com"]
-    start_urls = ["https://book.douban.com/tag/%E5%B0%8F%E8%AF%B4"]
+    start_urls = ["https://book.douban.com/tag/小说"]
 
     def parse(self, response):
         print("===============================================================")
