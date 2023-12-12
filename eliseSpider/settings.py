@@ -39,8 +39,9 @@ ROBOTSTXT_OBEY = False
 # Override the default request headers:
 DEFAULT_REQUEST_HEADERS = {
    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-   "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,ko;q=0.7",
+   "Accept-Language": "zh-CN",
    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+   #"Referer": "https://book.douban.com/",
 }
 
 # Enable or disable spider middlewares
@@ -63,9 +64,9 @@ DEFAULT_REQUEST_HEADERS = {
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    "eliseSpider.pipelines.ElisespiderPipeline": 300,
-#}
+ITEM_PIPELINES = {
+   "eliseSpider.pipelines.ElisespiderPipeline": 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
@@ -92,3 +93,10 @@ DEFAULT_REQUEST_HEADERS = {
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
+
+
+MYSQL_HOST = '192.168.1.100'  # 数据库地址
+MYSQL_PORT = 3308  # 数据库端口
+MYSQL_DBNAME = 'wt_tools_0922'  # 数据库名字
+MYSQL_USER = 'wt_tools_0922'  # 数据库登录名
+MYSQL_PASSWD = '06my4ta'  # 数据库登录密码

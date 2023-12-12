@@ -14,15 +14,18 @@ class ElisespiderItem(scrapy.Item):
     # book name
     name = scrapy.Field()
     # 作者
-    auther = scrapy.Field()
+    #author = scrapy.Field()
     # 出版社
-    publishingHouse = scrapy.Field()
+    #publishingHouse = scrapy.Field()
     # 出版时间
-    publishedDate = scrapy.Field()
+    #publishedDate = scrapy.Field()
     # 价格
-    price = scrapy.Field()
+    #price = scrapy.Field()
+    pub = scrapy.Field()
     # 评价分数
-    ratingNums = scrapy.Field()
+    ratingNum = scrapy.Field()
     # 评价人数
-    ratingPersonNub = scrapy.Field()
+    ratingPersonNum = scrapy.Field()
+    # 评价人数
+    tag = scrapy.Field()
 
