@@ -19,8 +19,8 @@ class DoubanSpider(scrapy.Spider):
             item['name'] = book.xpath('./div[@class="info"]/h2/a//@title').extract_first().strip()
             item['pub'] = book.xpath('./div[@class="info"]/div[@class="pub"]/text()').extract_first().strip()
 
-            item['ratingNum'] = book.xpath('./div[@class="info"]/div/span[@class="rating_nums"]/text()').extract_first().strip()
-            item['ratingPersonNum'] = book.xpath('./div[@class="info"]/div/span[@class="pl"]/text()').extract_first().strip()
+            item['ratingNum'] = (book.xpath('./div[@class="info"]/div/span[@class="rating_nums"]/text()').extract_first().strip())
+            item['ratingPersonNum'] = (book.xpath('./div[@class="info"]/div/span[@class="pl"]/text()').extract_first().strip())
 
             item['tag'] = '小说'
             #print(item)

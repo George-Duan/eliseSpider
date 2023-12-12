@@ -24,7 +24,7 @@ class ElisespiderPipeline:
     def process_item(self, item, spider):
         try:
             self.cursor.execute(
-                """insert into book(book_name,book_tag,author,publishing_house,publish_date,book_price,detail_link,book_icon_img,rating_nums,rating_person_num)
+                """insert into book(book_name,book_tag,pub,detail_link,book_icon_img,rating_nums,rating_person_num)
                   value (%s,%s,%s,%s,%s,%s,%s)""",
                 (item['name'],
                  item['tag'],
