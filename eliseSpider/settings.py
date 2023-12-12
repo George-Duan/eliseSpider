@@ -65,7 +65,8 @@ DEFAULT_REQUEST_HEADERS = {
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   "eliseSpider.pipelines.ElisespiderPipeline": 300,
+   "eliseSpider.pipelines.DoubanBookItemElisespiderPipeline": 300,
+   "eliseSpider.pipelines.DoubanBookImgDownloadPipeline": 301,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
