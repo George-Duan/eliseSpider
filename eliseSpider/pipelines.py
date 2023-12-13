@@ -9,6 +9,7 @@ from itemadapter import ItemAdapter
 import pymysql
 from eliseSpider import settings
 
+
 class DoubanBookItemElisespiderPipeline:
     def __init__(self):
         self.connect = pymysql.connect(
@@ -35,15 +36,17 @@ class DoubanBookItemElisespiderPipeline:
             print("重复插入了==>错误信息为：" + str(err))
         return item
 
+
 import urllib.request
-#多管道下载书籍图片
+
+
+# 多管道下载书籍图片
 class DoubanBookImgDownloadPipeline:
     def process_item(self, item, spider):
         try:
             url = item.get('book_icon_img')
             filename = 'D:\\doubanBookImg\\' + item.get('tag') + '\\' + item.get('book_icon_img').split('/')[-1]
-            urllib.request.urlretrieve(url = url, filename = filename)
+            urllib.request.urlretrieve(url=url, filename=filename)
         except Exception as err:
             print("下载书籍图片文件异常：" + str(err))
         return item
-

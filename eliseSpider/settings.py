@@ -96,7 +96,7 @@ TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
 
 
-MYSQL_HOST = '192.168.1.1'  # 数据库地址
+MYSQL_HOST = '47.242.240.239'  # 数据库地址
 MYSQL_PORT = 3308  # 数据库端口
 MYSQL_DBNAME = 'wt_tools_0922'  # 数据库名字
 MYSQL_USER = 'wt_tools_0922'  # 数据库登录名
