@@ -6,7 +6,7 @@
 创建项目
 myproject为项目名，project_dir可选指定，未指定情况下，与myproject相同
 
-```
+```shell
 scrapy startproject myproject [project_dir]
 ```
 
@@ -34,4 +34,16 @@ myproject/
 cd myproject/myproject/spiders
 scrapy genspider douban book.douban.com
 ```
+
+
+
+## xpath 与 css
+
+scrapy根据url请求到内容后，一般从网页中解析获取目标数据时，都是使用xpath或css选择器进行，这一部分不难
+
+xpath使用详解见：https://www.cnblogs.com/wendyw/p/11633588.html
+
+
+
+
 
