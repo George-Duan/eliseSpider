@@ -17,12 +17,12 @@ class DoubanSpider(scrapy.Spider):
         item = ElisespiderItem()
         book_list = response.xpath('/html/body/div/div/div/div/div/ul[@class="subject-list"]/li')
         for book in book_list:
-            book_icon_img = book.xpath('./div/a/img//@src').extract_first()
-            detail_link = book.xpath('./div[@class="info"]/h2/a//@href').extract_first()
-            name = book.xpath('./div[@class="info"]/h2/a//@title').extract_first()
-            pub = book.xpath('./div[@class="info"]/div[@class="pub"]/text()').extract_first()
-            ratingNum = book.xpath('./div[@class="info"]/div/span[@class="rating_nums"]/text()').extract_first()
-            ratingPersonNum = book.xpath('./div[@class="info"]/div/span[@class="pl"]/text()').extract_first()
+            book_icon_img = book.xpath('./div/a/img//@src').get()
+            detail_link = book.xpath('./div[@class="info"]/h2/a//@href').get()
+            name = book.xpath('./div[@class="info"]/h2/a//@title').get()
+            pub = book.xpath('./div[@class="info"]/div[@class="pub"]/text()').get()
+            ratingNum = book.xpath('./div[@class="info"]/div/span[@class="rating_nums"]/text()').get()
+            ratingPersonNum = book.xpath('./div[@class="info"]/div/span[@class="pl"]/text()').get()
             tag = '小说'
 
             item['book_icon_img'] = book_icon_img if book_icon_img is None or len(
