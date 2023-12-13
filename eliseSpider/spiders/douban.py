@@ -10,7 +10,23 @@ class DoubanSpider(scrapy.Spider):
     base_url = 'https://book.douban.com/tag/%E5%B0%8F%E8%AF%B4?start='
     page = 1
 
+    ## parse_tag
     def parse(self, response):
+        table_list = response.xpath('//table')
+        for table in table_list:
+            type_name = table.xpath('./preceding-sibling::a/@name').get()
+            tag_list = table.xpath('./tbody/tr/td/a')
+            for tag in tag_list:
+                href = tag.xpath('./@href').get()
+                tag_name = tag.xpath('./@href').get()
+                url = 'https://book.douban.com' + href
+                yield scrapy.Request(url=url, callback=self.parse_page)
+
+
+    def parse_page(self, response):
+        pass
+
+    def parse_detail(self, response):
         print("===============================================================")
         # print(response.text)
         # print("===============================================================")
@@ -44,4 +60,3 @@ class DoubanSpider(scrapy.Spider):
             self.page = self.page + 1
             url = self.base_url + str(self.page * 20) + '&type=T'
             yield scrapy.Request(url=url, callback=self.parse)
-
