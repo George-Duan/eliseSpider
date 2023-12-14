@@ -7,6 +7,10 @@ import scrapy
 
 
 class ElisespiderItem(scrapy.Item):
+    # 分类名
+    type_name = scrapy.Field()
+    # 标签名
+    tag_name = scrapy.Field()
     # icon 图片链接
     book_icon_img = scrapy.Field()
     # 详情链接
@@ -16,9 +20,9 @@ class ElisespiderItem(scrapy.Item):
     # 作者
     #author = scrapy.Field()
     # 出版社
-    #publishingHouse = scrapy.Field()
+    #publishing_house = scrapy.Field()
     # 出版时间
-    #publishedDate = scrapy.Field()
+    #published_date = scrapy.Field()
     # 价格
     #price = scrapy.Field()
     pub = scrapy.Field()
@@ -26,6 +30,5 @@ class ElisespiderItem(scrapy.Item):
     ratingNum = scrapy.Field()
     # 评价人数
     ratingPersonNum = scrapy.Field()
-    # 评价人数
-    tag = scrapy.Field()
+
 
