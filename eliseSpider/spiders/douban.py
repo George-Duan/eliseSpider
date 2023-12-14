@@ -41,15 +41,17 @@ class DoubanSpider(scrapy.Spider):
 
         item = response.meta['item']
 
+
         book_list = response.xpath('/html/body/div/div/div/div/div/ul[@class="subject-list"]/li')
         for book in book_list:
             detail_link = book.xpath('./div[@class="info"]/h2/a//@href').get()
             print('分页请求中，当前页是：' + detail_link)
-            yield scrapy.Request(url=detail_link, meta={'item': item}, callback=self.parse_detail)
+            yield scrapy.Request(url=detail_link, meta={'item': item, 'url': detail_link}, callback=self.parse_detail)
 
 
     def parse_detail(self, response):
-        print("===============================================================")
+        url = response.meta['url']
+        print("当前爬取的是：" + url)
         item = response.meta['item']
 
         book_subject = response.xpath('//div[@class="subjectwrap clearfix"]')
