@@ -19,6 +19,7 @@ class ElisespiderDoubanBookTypeItem(scrapy.Item):
     name = scrapy.Field()
 
 class ElisespiderDoubanBookDetailItem(scrapy.Item):
+    book_name = scrapy.Field()
     type_name = scrapy.Field()
     tag_name = scrapy.Field()
     #详情链接

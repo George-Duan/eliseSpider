@@ -25,12 +25,15 @@ class DoubanBookItemElisespiderPipeline:
     def process_item(self, item, spider):
         try:
             self.cursor.execute(
-                """insert into book(book_name,book_tag,pub,detail_link,book_icon_img,rating_nums,rating_person_num)
-                  value (%s,%s,%s,%s,%s,%s,%s)""",
-                (item['name'],
-                 item['tag'],
-                 item['pub'],
-                 item['detail_link'], item['book_icon_img'], item['ratingNum'], item['ratingPersonNum']))
+                """insert into book(book_name,type_name,tag_name,detail_link,book_img,author,press,subtitle,origin_title,translator,publication_year,page_num,price,bookbinding,isbn,rating_num,rating_people,intro,dir_full)
+                  value (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
+                (item['book_name'],
+                 item['type_name'],
+                 item['tag_name'],
+                 item['detail_link'], item['book_img'], item['author'], item['press'],
+                 item['subtitle'], item['origin_title'], item['translator'], item['publication_year'], item['page_num'],
+                 item['price'], item['bookbinding'], item['isbn'], item['rating_num'], item['rating_people'],
+                 item['intro'], item['dir_full']))
             self.connect.commit()
         except Exception as err:
             print("重复插入了==>错误信息为：" + str(err))
@@ -44,7 +47,7 @@ import urllib.request
 class DoubanBookImgDownloadPipeline:
     def process_item(self, item, spider):
         try:
-            url = item.get('book_icon_img')
+            url = item.get('book_img')
             filename = 'D:\\doubanBookImg\\' + item.get('tag') + '\\' + item.get('book_icon_img').split('/')[-1]
             urllib.request.urlretrieve(url=url, filename=filename)
         except Exception as err:

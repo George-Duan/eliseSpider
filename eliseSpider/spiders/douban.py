@@ -5,12 +5,13 @@ from eliseSpider.items import ElisespiderDoubanBookDetailItem
 class DoubanSpider(scrapy.Spider):
     name = "douban"
     allowed_domains = ["book.douban.com"]
-    start_urls = ["https://book.douban.com/tag/?view=type&icn=index-sorttags-all"]
+    # start_urls = ["https://book.douban.com/tag/?view=type&icn=index-sorttags-all"]
+    start_urls = ["https://book.douban.com/subject/36104107/"]
 
-    base_url = 'https://book.douban.com/tag/%E5%B0%8F%E8%AF%B4?start='
+    #base_url = 'https://book.douban.com/tag/%E5%B0%8F%E8%AF%B4?start='
 
     ## parse_tag
-    def parse(self, response):
+    def parse_1(self, response):
         table_list = response.xpath('//table')
         for table in table_list:
             type_name = table.xpath('./preceding-sibling::a/@name').get()
@@ -49,63 +50,67 @@ class DoubanSpider(scrapy.Spider):
             yield scrapy.Request(url=detail_link, meta={'item': item}, callback=self.parse_detail)
 
 
-    def parse_detail(self, response):
+    #def parse_detail(self, response):
+    def parse(self, response):
         print("===============================================================")
-        item = response.meta['item']
+        #item = response.meta['item']
+        item = ElisespiderDoubanBookDetailItem()
+        book_name = response.xpath('//span[@property="v:itemreviewed"]').get()
 
         article = response.xpath('//div[@class="article"]')
         #图书图片，取大图
         book_img = article.xpath('//div[@id="mainpic"]/a/@href').get()
-
+        tag_name = "小说"
+        type_name = '文学'
         #书籍图片右边详情列表展示
         info = article.xpath('//div[@id="info"]')
-        author = info.xpath('//span[text()=" 作者"]/following-sibling::a/@text()').get()
+        author = info.xpath('//span[text()=" 作者"]/following-sibling::a/text()').get()
         if not author:
             author = info.xpath('/span[text()=" 作者"]/following-sibling::text()').get()
         if author:
             author = author.strip()
 
-        press = info.xpath('//span[text()="出版社:"]/following-sibling::a/@text()').get()
+        press = info.xpath('//span[text()="出版社:"]/following-sibling::a/text()').get()
         if not press:
             press = info.xpath('/span[text()="出版社:"]/following-sibling::text()').get()
         if press:
             press = press.strip()
 
-        subtitle = info.xpath('//span[text()="副标题:"]/following-sibling::a/@text()').get()
+        subtitle = info.xpath('//span[text()="副标题:"]/following-sibling::a/text()').get()
         if not subtitle:
             subtitle = info.xpath('/span[text()="副标题:"]/following-sibling::text()').get()
         if subtitle:
             subtitle = subtitle.strip()
 
-        origin_title = info.xpath('//span[text()="原作名:"]/following-sibling::a/@text()').get()
+        origin_title = info.xpath('//span[text()="原作名:"]/following-sibling::a/text()').get()
         if not origin_title:
             origin_title = info.xpath('/span[text()="原作名:"]/following-sibling::text()').get()
         if origin_title:
             origin_title = origin_title.strip()
 
-        translator = info.xpath('//span[text()=" 译者"]/following-sibling::a/@text()').get()
+        translator = info.xpath('//span[text()=" 译者"]/following-sibling::a/text()').get()
         if not translator:
             translator = info.xpath('/span[text()=" 译者"]/following-sibling::text()').get()
         if translator:
             translator = translator.strip()
 
-        publication_year = info.xpath('/span[text()="出版年:"]/following-sibling::text()').get()
+        publication_year = info.xpath('//span[text()="出版年:"]/following-sibling::text()').get()
         if publication_year:
             publication_year = publication_year.strip()
 
-        page_num = info.xpath('/span[text()="页数:"]/following-sibling::text()').get()
+        page_num = info.xpath('//span[text()="页数:"]/following-sibling::text()').get()
         if page_num:
             page_num = page_num.strip()
 
-        price = info.xpath('/span[text()="定价:"]/following-sibling::text()').get()
+        price = info.xpath('//span[text()="定价:"]/following-sibling::text()').get()
         if price:
             price = price.strip()
 
-        bookbinding = info.xpath('/span[text()="装帧:"]/following-sibling::text()').get()
+        bookbinding = info.xpath('//span[text()="装帧:"]/following-sibling::text()').get()
         if bookbinding:
             bookbinding = bookbinding.strip()
 
-        isbn = info.xpath('/span[text()="ISBN:"]/following-sibling::text()').get()
+        isbn = info.xpath('//span[text()="ISBN:"]/following-sibling::text()').get()
         if isbn:
             isbn = isbn.strip()
 
@@ -115,20 +120,23 @@ class DoubanSpider(scrapy.Spider):
             rating_num = rating_num.strip()
 
         #评价人数
-        rating_people = article.xpath('//div[@id="interest_sectl"]//div[@class="rating_right"]//a[@class="rating_people"]/text()').get()
+        rating_people = article.xpath('//div[@id="interest_sectl"]//div[@class="rating_sum"]//a[@class="rating_people"]/span/text()').get()
         if rating_people:
             rating_people = rating_people.strip()
 
         # 内容简介
-        intro_array = article.xpath('//div[@id="link-report"]//div[@class="intro"]/p/text()').getAll()
-        intro = intro_array.join('\r\n') if intro_array else ''
+        intro_array = article.xpath('//div[@id="link-report"]//div[@class="intro"]/p/text()').getall()
+        intro = '\r\n'.join(intro_array) if intro_array else ''
 
         # 作者简介 暂时不爬了
 
-        #目录
-        dir_full_array = article.xpath('//div[@class="related_info"]//div[@id="dir_35575892_full"]/text()').getAll()
-        dir_full = dir_full_array.join('\r\n') if dir_full_array else ''
+        #目录 36104107
+        dir_full_array = article.xpath('//div[@class="related_info"]//div[@id="dir_35575892_full"]/text()').getall()
+        dir_full = '\r\n'.join(dir_full_array) if dir_full_array else ''
 
+        item['book_name'] = book_name
+        item['type_name'] = type_name
+        item['tag_name'] = tag_name
         item['detail_link'] = response.request.url
         # 图片链接
         item['book_img'] = book_img
