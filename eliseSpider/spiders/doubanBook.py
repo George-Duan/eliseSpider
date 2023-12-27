@@ -62,20 +62,26 @@ class DoubanbookSpider(CrawlSpider):
         #type_name = '文学'
         # 书籍图片右边详情列表展示
         info = article.xpath('//div[@id="info"]')
-        authorArray = info.xpath('//span[contains(text(), "作者")]/following-sibling::a/text()').getall()
+        authorArray = info.xpath('//span[contains(text(), "作者")]/following-sibling::a[contains(@href, "author")]/text()').getall()
         if not authorArray:
             authorArray = info.xpath('/span[contains(text(), "作者")]/following-sibling::text()').getall()
         author = ' | '.join(authorArray) if authorArray else ''
 
-        press = info.xpath('//span[contains(text(), "出版社")]/following-sibling::a/text()').get()
+        press = info.xpath('//span[contains(text(), "出版社")]/following-sibling::a[contains(@href, "press")]/text()').get()
         if not press:
             press = info.xpath('/span[contains(text(), "出版社")]/following-sibling::text()').get()
         if press:
             press = press.strip()
 
-        subtitle = info.xpath('//span[contains(text(), "副标题")]/following-sibling::a/text()').get()
+        subtitle = info.xpath('//span[contains(text(), "副标题")]/following-sibling::a[contains(@href, "subtitle")]/text()').get()
         if not subtitle:
             subtitle = info.xpath('/span[contains(text(), "副标题")]/following-sibling::text()').get()
+        if subtitle:
+            subtitle = subtitle.strip()
+
+        series = info.xpath('//span[contains(text(), "丛书")]/following-sibling::a[contains(@href, "series")]/text()').get()
+        if not subtitle:
+            subtitle = info.xpath('/span[contains(text(), "丛书")]/following-sibling::text()').get()
         if subtitle:
             subtitle = subtitle.strip()
 
@@ -131,7 +137,7 @@ class DoubanbookSpider(CrawlSpider):
         # 目录 36104107
         dir_full_xpath = '//div[@class="related_info"]//div[@id="dir_' + subjectId + '_full"]/text()'
         dir_full_array = article.xpath(dir_full_xpath).getall()
-        dir_full = '\r\n'.join(dir_full_array) if dir_full_array else ''
+        dir_full = ''.join(dir_full_array) if dir_full_array else ''
 
         item['book_name'] = book_name
         item['detail_link'] = response.request.url
