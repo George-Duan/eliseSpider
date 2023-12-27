@@ -50,6 +50,9 @@ class DoubanbookSpider(CrawlSpider):
         print("===============================================================")
         item = response.meta['item']
 
+        urlArray = response.url.split('/')
+        subjectId = urlArray[-1]
+
         book_name = response.xpath('//span[@property="v:itemreviewed"]/text()').get()
 
         article = response.xpath('//div[@class="article"]')
@@ -59,53 +62,51 @@ class DoubanbookSpider(CrawlSpider):
         #type_name = '文学'
         # 书籍图片右边详情列表展示
         info = article.xpath('//div[@id="info"]')
-        author = info.xpath('//span[text()=" 作者"]/following-sibling::a/text()').get()
-        if not author:
-            author = info.xpath('/span[text()=" 作者"]/following-sibling::text()').get()
-        if author:
-            author = author.strip()
+        authorArray = info.xpath('//span[contains(text(), "作者")]/following-sibling::a/text()').getall()
+        if not authorArray:
+            authorArray = info.xpath('/span[contains(text(), "作者")]/following-sibling::text()').getall()
+        author = ' | '.join(authorArray) if authorArray else ''
 
-        press = info.xpath('//span[text()="出版社:"]/following-sibling::a/text()').get()
+        press = info.xpath('//span[contains(text(), "出版社")]/following-sibling::a/text()').get()
         if not press:
-            press = info.xpath('/span[text()="出版社:"]/following-sibling::text()').get()
+            press = info.xpath('/span[contains(text(), "出版社")]/following-sibling::text()').get()
         if press:
             press = press.strip()
 
-        subtitle = info.xpath('//span[text()="副标题:"]/following-sibling::a/text()').get()
+        subtitle = info.xpath('//span[contains(text(), "副标题")]/following-sibling::a/text()').get()
         if not subtitle:
-            subtitle = info.xpath('/span[text()="副标题:"]/following-sibling::text()').get()
+            subtitle = info.xpath('/span[contains(text(), "副标题")]/following-sibling::text()').get()
         if subtitle:
             subtitle = subtitle.strip()
 
-        origin_title = info.xpath('//span[text()="原作名:"]/following-sibling::a/text()').get()
+        origin_title = info.xpath('//span[contains(text(), "原作名")]/following-sibling::a/text()').get()
         if not origin_title:
-            origin_title = info.xpath('/span[text()="原作名:"]/following-sibling::text()').get()
+            origin_title = info.xpath('/span[contains(text(), "原作名")]/following-sibling::text()').get()
         if origin_title:
             origin_title = origin_title.strip()
 
-        translator = info.xpath('//span[text()=" 译者"]/following-sibling::a/text()').get()
-        if not translator:
-            translator = info.xpath('/span[text()=" 译者"]/following-sibling::text()').get()
-        if translator:
-            translator = translator.strip()
+        translatorArray = info.xpath('//span[contains(text(), "译者")]/following-sibling::a/text()').getall()
+        if not translatorArray:
+            translatorArray = info.xpath('/span[contains(text(), "译者")]/following-sibling::text()').getall()
+        translator = ' | '.join(translatorArray) if translatorArray else ''
 
-        publication_year = info.xpath('//span[text()="出版年:"]/following-sibling::text()').get()
+        publication_year = info.xpath('//span[contains(text(), "出版年")]/following-sibling::text()').get()
         if publication_year:
             publication_year = publication_year.strip()
 
-        page_num = info.xpath('//span[text()="页数:"]/following-sibling::text()').get()
+        page_num = info.xpath('//span[contains(text(), "页数")]/following-sibling::text()').get()
         if page_num:
             page_num = page_num.strip()
 
-        price = info.xpath('//span[text()="定价:"]/following-sibling::text()').get()
+        price = info.xpath('//span[contains(text(), "定价")]/following-sibling::text()').get()
         if price:
             price = price.strip()
 
-        bookbinding = info.xpath('//span[text()="装帧:"]/following-sibling::text()').get()
+        bookbinding = info.xpath('//span[contains(text(), "装帧")]/following-sibling::text()').get()
         if bookbinding:
             bookbinding = bookbinding.strip()
 
-        isbn = info.xpath('//span[text()="ISBN:"]/following-sibling::text()').get()
+        isbn = info.xpath('//span[contains(text(), "ISBN")]/following-sibling::text()').get()
         if isbn:
             isbn = isbn.strip()
 
@@ -121,13 +122,15 @@ class DoubanbookSpider(CrawlSpider):
             rating_people = rating_people.strip()
 
         # 内容简介
-        intro_array = article.xpath('//div[@id="link-report"]//div[@class="intro"]/p/text()').getall()
+        intro_array = (article.xpath('//div[@id="link-report"]/span[@class="all hidden"]//div[@class="intro"]/p/text()')
+                       .getall())
         intro = '\r\n'.join(intro_array) if intro_array else ''
 
         # 作者简介 暂时不爬了
 
         # 目录 36104107
-        dir_full_array = article.xpath('//div[@class="related_info"]//div[@id="dir_35575892_full"]/text()').getall()
+        dir_full_array = (article.xpath('//div[@class="related_info"]//div[@id="dir_' + subjectId + '_full")]/text()')
+                          .getall())
         dir_full = '\r\n'.join(dir_full_array) if dir_full_array else ''
 
         item['book_name'] = book_name
