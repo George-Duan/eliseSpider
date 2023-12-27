@@ -64,66 +64,66 @@ class DoubanbookSpider(CrawlSpider):
         info = article.xpath('//div[@id="info"]')
         authorArray = info.xpath('//span[contains(text(), "作者")]/following-sibling::a[contains(@href, "author")]/text()').getall()
         if not authorArray:
-            authorArray = info.xpath('/span[contains(text(), "作者")]/following-sibling::text()').getall()
+            authorArray = info.xpath('//span[contains(text(), "作者")]/following-sibling::text()[1]').getall()
         author = ' | '.join(authorArray) if authorArray else ''
 
         press = info.xpath('//span[contains(text(), "出版社")]/following-sibling::a[contains(@href, "press")]/text()').get()
         if not press:
-            press = info.xpath('/span[contains(text(), "出版社")]/following-sibling::text()').get()
+            press = info.xpath('//span[contains(text(), "出版社")]/following-sibling::text()[1]').get()
         if press:
             press = press.strip()
 
         subtitle = info.xpath('//span[contains(text(), "副标题")]/following-sibling::a[contains(@href, "subtitle")]/text()').get()
         if not subtitle:
-            subtitle = info.xpath('/span[contains(text(), "副标题")]/following-sibling::text()').get()
+            subtitle = info.xpath('//span[contains(text(), "副标题")]/following-sibling::text()[1]').get()
         if subtitle:
             subtitle = subtitle.strip()
 
         series = info.xpath('//span[contains(text(), "丛书")]/following-sibling::a[contains(@href, "series")]/text()').get()
         if not series:
-            series = info.xpath('/span[contains(text(), "丛书")]/following-sibling::text()').get()
+            series = info.xpath('//span[contains(text(), "丛书")]/following-sibling::text()[1]').get()
         if series:
             series = series.strip()
 
-        origin_title = info.xpath('/span[contains(text(), "原作名")]/following-sibling::text()').get()
+        origin_title = info.xpath('//span[contains(text(), "原作名")]/following-sibling::text()').get()
         if not origin_title:
-            origin_title = info.xpath('/span[contains(text(), "原作名")]/following-sibling::a/text()').get()
+            origin_title = info.xpath('//span[contains(text(), "原作名")]/following-sibling::a/text()').get()
         if origin_title:
             origin_title = origin_title.strip()
 
         translatorArray = info.xpath('//span[contains(text(), "译者")]/following-sibling::a/text()').getall()
         if not translatorArray:
-            translatorArray = info.xpath('/span[contains(text(), "译者")]/following-sibling::text()').getall()
+            translatorArray = info.xpath('//span[contains(text(), "译者")]/following-sibling::text()[1]').getall()
         translator = ' | '.join(translatorArray) if translatorArray else ''
 
-        publication_year = info.xpath('//span[contains(text(), "出版年")]/following-sibling::text()').get()
+        publication_year = info.xpath('//span[contains(text(), "出版年")]/following-sibling::text()[1]').get()
         if publication_year:
             publication_year = publication_year.strip()
 
-        page_num = info.xpath('//span[contains(text(), "页数")]/following-sibling::text()').get()
+        page_num = info.xpath('//span[contains(text(), "页数")]/following-sibling::text()[1]').get()
         if page_num:
             page_num = page_num.strip()
 
-        price = info.xpath('//span[contains(text(), "定价")]/following-sibling::text()').get()
+        price = info.xpath('//span[contains(text(), "定价")]/following-sibling::text()[1]').get()
         if price:
             price = price.strip()
 
-        bookbinding = info.xpath('//span[contains(text(), "装帧")]/following-sibling::text()').get()
+        bookbinding = info.xpath('//span[contains(text(), "装帧")]/following-sibling::text()[1]').get()
         if bookbinding:
             bookbinding = bookbinding.strip()
 
-        isbn = info.xpath('//span[contains(text(), "ISBN")]/following-sibling::text()').get()
+        isbn = info.xpath('//span[contains(text(), "ISBN")]/following-sibling::text()[1]').get()
         if isbn:
             isbn = isbn.strip()
 
         # 评分
-        rating_num = article.xpath('//div[@id="interest_sectl"]//strong[@class="ll rating_num "]/text()').get()
+        rating_num = article.xpath('//div[@id="interest_sectl"]//strong[@class="ll rating_num "]/text()[1]').get()
         if rating_num:
             rating_num = rating_num.strip()
 
         # 评价人数
         rating_people = article.xpath(
-            '//div[@id="interest_sectl"]//div[@class="rating_sum"]//a[@class="rating_people"]/span/text()').get()
+            '//div[@id="interest_sectl"]//div[@class="rating_sum"]//a[@class="rating_people"]/span/text()[1]').get()
         if rating_people:
             rating_people = rating_people.strip()
 
