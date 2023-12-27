@@ -30,6 +30,8 @@ class ElisespiderDoubanBookDetailItem(scrapy.Item):
     author = scrapy.Field()
     #出版社
     press = scrapy.Field()
+    # 出版社
+    series = scrapy.Field()
     #副标题
     subtitle = scrapy.Field()
     #原名

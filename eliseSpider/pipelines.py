@@ -26,12 +26,12 @@ class DoubanBookItemElisespiderPipeline:
     def process_item(self, item, spider):
         try:
             self.cursor.execute(
-                """insert into book(book_name,tag_name,detail_link,book_img,author,press,subtitle,origin_title,translator,publication_year,page_num,price,bookbinding,isbn,rating_num,rating_people,intro,dir_full)
-                  value (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
+                """insert into book(book_name,tag_name,detail_link,book_img,author,press, series, subtitle,origin_title,translator,publication_year,page_num,price,bookbinding,isbn,rating_num,rating_people,intro,dir_full)
+                  value (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
                 (item['book_name'],
                  #item['type_name'],
                  item['tag_name'],
-                 item['detail_link'], item['book_img'], item['author'], item['press'],
+                 item['detail_link'], item['book_img'], item['author'], item['press'],item['series'],
                  item['subtitle'], item['origin_title'], item['translator'], item['publication_year'], item['page_num'],
                  item['price'], item['bookbinding'], item['isbn'], item['rating_num'], item['rating_people'],
                  item['intro'], item['dir_full']))
