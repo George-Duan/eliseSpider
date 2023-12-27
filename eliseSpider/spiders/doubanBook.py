@@ -51,7 +51,7 @@ class DoubanbookSpider(CrawlSpider):
         item = response.meta['item']
 
         urlArray = response.url.split('/')
-        subjectId = urlArray[-1]
+        subjectId = urlArray[-2]
 
         book_name = response.xpath('//span[@property="v:itemreviewed"]/text()').get()
 
@@ -129,8 +129,8 @@ class DoubanbookSpider(CrawlSpider):
         # 作者简介 暂时不爬了
 
         # 目录 36104107
-        dir_full_array = (article.xpath('//div[@class="related_info"]//div[@id="dir_' + subjectId + '_full")]/text()')
-                          .getall())
+        dir_full_xpath = '//div[@class="related_info"]//div[@id="dir_' + subjectId + '_full"]/text()'
+        dir_full_array = article.xpath(dir_full_xpath).getall()
         dir_full = '\r\n'.join(dir_full_array) if dir_full_array else ''
 
         item['book_name'] = book_name
