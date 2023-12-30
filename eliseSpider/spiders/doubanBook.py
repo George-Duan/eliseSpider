@@ -19,7 +19,12 @@ class DoubanbookSpider(CrawlSpider):
             follow=True
         ),
         Rule(
-            LxmlLinkExtractor(allow=(r"/tag/编程\?start=\d+\&type=T",), restrict_xpaths=('/html/body/div/div/div/div/div/div[@class="paginator"]/a'), ),
+            LxmlLinkExtractor(allow=(r"/tag/.+",), restrict_xpaths=("//div[@class='tags-list']/a"), ),
+            callback="parse_item",
+            follow=True
+        ),
+        Rule(
+            LxmlLinkExtractor(allow=(r"/tag/.+\?start=\d+\&type=T",), restrict_xpaths=('/html/body/div/div/div/div/div/div[@class="paginator"]/a'), ),
             callback="parse_item",
             follow=True
         )
@@ -62,7 +67,7 @@ class DoubanbookSpider(CrawlSpider):
         #type_name = '文学'
         # 书籍图片右边详情列表展示
         info = article.xpath('//div[@id="info"]')
-        authorArray = info.xpath('//span[contains(text(), "作者")]/following-sibling::a[contains(@href, "author")]/text()').getall()
+        authorArray = info.xpath('//span[contains(text(), "作者")]/following-sibling::a[1]/text()').getall()
         if not authorArray:
             authorArray = info.xpath('//span[contains(text(), "作者")]/following-sibling::text()[1]').getall()
         author = ' | '.join(authorArray) if authorArray else ''
